@@ -150,7 +150,9 @@ class CommandGripperActionServer(object):
         result.error_string = "Invalid joint position on trajectory point "
         self._joint_trajectory_action_server.set_aborted(result)
         return
-      target_speed = goal_trajectory_point.velocities[0] if len(goal_trajectory_point.velocities) > 0 else 0.01
+        
+      target_speed = goal.trajectory.points[int(len(goal.trajectory.points)/2)].velocities[0] if goal.trajectory.points[int(len(goal.trajectory.points)/2)].velocities > 0 else 0.1
+      #target_speed = goal_trajectory_point.velocities[0] if len(goal_trajectory_point.velocities) > 0 else 0.01
       target_force = goal_trajectory_point.effort[0] if len(goal_trajectory_point.effort) > 0 else 0.1
       goal_command.position = self._driver.from_radians_to_distance(goal_trajectory_point.positions[0])
       goal_command.speed = abs(target_speed) # To-Do: Convert to rad/s
